@@ -1,10 +1,23 @@
 import { useState, useEffect } from "react";
-export default function Recipe() {
+
+export const getServerSideProps = () => {
+  const mykey = process.env.API_KEY;
+
+  return {
+    props: {
+      env: mykey,
+    },
+  };
+};
+
+export default function Recipe({ env }) {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/todos/1")
+    fetch(
+      `https://api.spoonacular.com/recipes/716429/information?apiKey=${env}`,
+    )
       .then((res) => res.json())
       .then((data) => {
         setData(data);
